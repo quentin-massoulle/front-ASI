@@ -4,7 +4,12 @@ import { type ReactNode } from "react"
 type Props<TData extends Record<string, any>> = {
   data?: TData[]
   columns: {
-    key: keyof TData
+    // keyof TData signifie que l'on sait que ça 
+    // les clés possibles proviennent de l'objet
+    // l'ajout de | string permet d'informer que n'importe
+    // quel string est possible.
+    // L'ajout de & {} permet de garder l'auto-complétion, petit hack TS.
+    key: keyof TData | (string & {})
     label: string
     render?: (data: TData) => ReactNode
   }[]

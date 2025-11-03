@@ -1,112 +1,67 @@
-import { Input } from "@/components/ui/Input"
-import { InputSelect } from "@/components/ui/InputSelect"
-import { Modal } from "@/components/ui/Modal"
+import { Table } from "@/components/ui/Table"
+import { Pen } from "lucide-react"
 import { useState } from "react"
-import { useCreateParcours } from "./hooks/useCreateParcours"
-import { Table } from "@/components/Table"
-import { useListParcours } from "./hooks/useListParcours"
-import { data } from "react-router"
+import { ParcoursFormModal } from "./components/ParcoursFormModal"
+import { useListParcours } from "./hooks"
+
+import type { Parcours } from "./types"
 
 export const ParcoursPage: React.FC = () => {
-  const [createModalOpen, setCreateModalOpen] = useState(false)
-  const [formData, setFormData] = useState({
-    nomParcours: "",
-    anneeFormation: "1",
-  })
-  const { data: parcours } = useListParcours()
-  const createParcourseMutation = useCreateParcours()
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editingParcours, setEditingParcours] = useState<Parcours | null>(null)
 
-  const handleCreate = async () => {
-    await createParcourseMutation.mutateAsync(
-      {
-        nomParcours: formData.nomParcours,
-        anneeFormation: parseInt(formData.anneeFormation),
-      },
-      {
-        onSuccess: () => {
-          setFormData({
-            nomParcours: "",
-            anneeFormation: "1",
-          })
-          setCreateModalOpen(false)
-        },
-        onError: (error) => {
-          alert(`Erreur lors de la création du parcours: ${error.message}`)
-        },
-      }
-    )
+  const { data: parcours } = useListParcours()
+
+  const handleOpenCreate = () => {
+    setEditingParcours(null)
+    setModalOpen(true)
   }
 
-  const handleCancel = () => {
-    setFormData({
-      nomParcours: "",
-      anneeFormation: "1",
-    })
-    setCreateModalOpen(false)
+  const handleOpenEdit = (parcours: Parcours) => {
+    setEditingParcours(parcours)
+    setModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setModalOpen(false)
+    setEditingParcours(null)
   }
 
   return (
-    <>
-
-      <div className="space-y-4">
-            <div className="flex justify-end">
-              <button
-                onClick={() => setCreateModalOpen(true)}
-                className="bg-gray-800 p-2 rounded-lg text-white"
-              >
-                Ajouter un parcours
-              </button>
-            </div>
-            <Table
-            data={parcours}
-            columns={[
-              { key: "nomParcours", label: "Nom" },
-              { key: "anneeFormation", label: "Année" },
-            ]}
-          />
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-end">
+        <button
+          onClick={handleOpenCreate}
+          className="bg-gray-800 p-2 rounded-lg text-white"
+        >
+          Ajouter un parcours
+        </button>
       </div>
 
-      <Modal isOpen={createModalOpen} onClose={handleCancel}>
-        <h2 className="text-xl font-bold mb-4">Ajouter un parcours</h2>
-        <Input
-          id="parcours-name"
-          label="Nom du parcours"
-          value={formData.nomParcours}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, nomParcours: e.target.value }))
-          }
-        />
-        <InputSelect
-          id="parcours-year"
-          label="Année"
-          options={[
-            { value: "1", label: "1ère année" },
-            { value: "2", label: "2ème année" },
-          ]}
-          value={formData.anneeFormation}
-          onChange={(value) =>
-            setFormData((prev) => ({ ...prev, anneeFormation: value }))
-          }
-        />
-        <div className="flex justify-end space-x-2">
-          <button
-            onClick={handleCancel}
-            disabled={createParcourseMutation.isPending}
-            className="p-2 rounded-lg "
-          >
-            Annuler
-          </button>
-          <button
-            onClick={handleCreate}
-            disabled={
-              createParcourseMutation.isPending || !formData.nomParcours
-            }
-            className="bg-gray-800 hover:bg-gray-600 disabled:bg-gray-400 p-2 rounded-lg text-white"
-          >
-            {createParcourseMutation.isPending ? "Création..." : "Créer"}
-          </button>
-        </div>
-      </Modal>
-    </>
+      <Table
+        data={parcours}
+        columns={[
+          { key: "nomParcours", label: "Nom" },
+          { key: "anneeFormation", label: "Année" },
+          {
+            key: "actions",
+            label: "Actions",
+            render: (row: Parcours) => (
+              <div className="space-x-4">
+                <button onClick={() => handleOpenEdit(row)}>
+                  <Pen className="w-6 h-6" />
+                </button>
+              </div>
+            ),
+          },
+        ]}
+      />
+
+      <ParcoursFormModal
+        isOpen={modalOpen}
+        editingParcours={editingParcours}
+        onClose={handleCloseModal}
+      />
+    </div>
   )
 }
