@@ -26,24 +26,6 @@ import {
 
 initDatabase()
 
-function addCORSHeaders(response: Response): Response {
-  const newResponse = new Response(response.body, response)
-  newResponse.headers.set(
-    "Access-Control-Allow-Origin",
-    "http://localhost:3000"
-  )
-  newResponse.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  )
-  newResponse.headers.set(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
-  )
-  newResponse.headers.set("Access-Control-Allow-Credentials", "true")
-  return newResponse
-}
-
 const server = serve({
   port: 3001,
   routes: {
@@ -285,15 +267,12 @@ const server = serve({
   },
 
   development: process.env.NODE_ENV !== "production" && {
-    // Enable browser hot reloading in development
     hmr: true,
 
-    // Echo console logs from the browser to the server
     console: true,
   },
 
-  fetch: async (req, server) => {
-    // Handle OPTIONS requests for CORS preflight
+  fetch: async (req) => {
     if (req.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -306,8 +285,7 @@ const server = serve({
       })
     }
 
-    const response = await server.fetch(req)
-    return addCORSHeaders(response)
+    return new Response("Not Found", { status: 404 })
   },
 })
 
