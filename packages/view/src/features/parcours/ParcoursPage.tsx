@@ -3,6 +3,9 @@ import { InputSelect } from "@/components/ui/InputSelect"
 import { Modal } from "@/components/ui/Modal"
 import { useState } from "react"
 import { useCreateParcours } from "./hooks/useCreateParcours"
+import { Table } from "@/components/Table"
+import { useListParcours } from "./hooks/useListParcours"
+import { data } from "react-router"
 
 export const ParcoursPage: React.FC = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false)
@@ -10,7 +13,7 @@ export const ParcoursPage: React.FC = () => {
     nomParcours: "",
     anneeFormation: "1",
   })
-
+  const { data: parcours } = useListParcours()
   const createParcourseMutation = useCreateParcours()
 
   const handleCreate = async () => {
@@ -44,13 +47,23 @@ export const ParcoursPage: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-end">
-        <button
-          onClick={() => setCreateModalOpen(true)}
-          className="bg-gray-800 p-2 rounded-lg text-white"
-        >
-          Ajouter un parcours
-        </button>
+
+      <div className="space-y-4">
+            <div className="flex justify-end">
+              <button
+                onClick={() => setCreateModalOpen(true)}
+                className="bg-gray-800 p-2 rounded-lg text-white"
+              >
+                Ajouter un parcours
+              </button>
+            </div>
+            <Table
+            data={parcours}
+            columns={[
+              { key: "nomParcours", label: "Nom" },
+              { key: "anneeFormation", label: "Année" },
+            ]}
+          />
       </div>
 
       <Modal isOpen={createModalOpen} onClose={handleCancel}>
