@@ -39,5 +39,19 @@ export const useUpdateParcours = () => {
         )
       })
     },
+    onMutate: async ({ id, payload }) => {
+      await queryClient.cancelQueries({ queryKey: ["parcours"] })
+
+      const previousParcours = queryClient.getQueryData<Parcours[]>([
+        "parcours",
+      ])
+      queryClient.setQueryData<Parcours[]>(["parcours"], (oldData) => {
+        if (!oldData) return oldData
+        return oldData.map((parcours) =>
+          parcours.id === id ? { ...parcours, ...payload } : parcours
+        )
+      })
+      return { previousParcours }
+    },
   })
 }

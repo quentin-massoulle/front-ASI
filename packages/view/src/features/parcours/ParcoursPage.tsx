@@ -1,9 +1,9 @@
 import { Table } from "@/components/ui/Table"
-import { Pen } from "lucide-react"
+import { Pen, Trash } from "lucide-react"
+
 import { useState } from "react"
 import { ParcoursFormModal } from "./components/ParcoursFormModal"
-import { useListParcours } from "./hooks"
-
+import { useListParcours , useDeleteParcours} from "./hooks"
 import type { Parcours } from "./types"
 
 export const ParcoursPage: React.FC = () => {
@@ -11,6 +11,7 @@ export const ParcoursPage: React.FC = () => {
   const [editingParcours, setEditingParcours] = useState<Parcours | null>(null)
 
   const { data: parcours } = useListParcours()
+  const deleteParcoursMutation = useDeleteParcours()
 
   const handleOpenCreate = () => {
     setEditingParcours(null)
@@ -20,6 +21,12 @@ export const ParcoursPage: React.FC = () => {
   const handleOpenEdit = (parcours: Parcours) => {
     setEditingParcours(parcours)
     setModalOpen(true)
+  }
+
+  const handleDelete = (parcours: Parcours) => {
+    if (confirm(`Supprimer le parcours "${parcours.nomParcours}" ?`)) {
+      deleteParcoursMutation.mutate(parcours.id)
+    }
   }
 
   const handleCloseModal = () => {
@@ -47,11 +54,18 @@ export const ParcoursPage: React.FC = () => {
             key: "actions",
             label: "Actions",
             render: (row: Parcours) => (
-              <div className="space-x-4">
-                <button onClick={() => handleOpenEdit(row)}>
-                  <Pen className="w-6 h-6" />
-                </button>
-              </div>
+              <>
+                <div className="space-x-4">
+                  <button onClick={() => handleOpenEdit(row)}>
+                    <Pen className="w-6 h-6" />
+                  </button>
+                </div>
+                <div className="space-x-4">
+                  <button onClick={() => handleDelete(row)}>
+                    <Trash className="w-6 h-6" />
+                  </button>
+                </div>
+              </>
             ),
           },
         ]}
