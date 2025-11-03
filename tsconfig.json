@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "compilerOptions": {
     // Environment setup & latest features
     "lib": ["ESNext"],
@@ -26,4 +27,11 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   }
+=======
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+>>>>>>> 0a034c2366a9e9738afa1b77a069d59976853851
 }
