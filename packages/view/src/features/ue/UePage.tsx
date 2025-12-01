@@ -2,30 +2,30 @@ import { Table } from "@/components/ui/Table"
 import { Pen, Trash } from "lucide-react"
 
 import { useState } from "react"
-import { ParcoursFormModal } from "./components/ParcoursFormModal"
-import { useListParcours , useDeleteParcours} from "./hooks"
-import type { Parcours } from "./types"
+import { UeFormModal } from "./components/UeFormModal"
+import { useListeUe , useDeleteUe} from "./hooks"
+import type { Ue } from "./types"
 
-export const ParcoursPage: React.FC = () => {
+export const UePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [editingParcours, setEditingParcours] = useState<Parcours | null>(null)
+  const [editingParcours, setEditingParcours] = useState<Ue | null>(null)
 
-  const { data: parcours } = useListParcours()
-  const deleteParcoursMutation = useDeleteParcours()
+  const { data: parcours } = useListeUe()
+  const deleteParcoursMutation = useDeleteUe()
 
   const handleOpenCreate = () => {
     setEditingParcours(null)
     setModalOpen(true)
   }
 
-  const handleOpenEdit = (parcours: Parcours) => {
-    setEditingParcours(parcours)
+  const handleOpenEdit = (ue: Ue) => {
+    setEditingParcours(ue)
     setModalOpen(true)
   }
 
-  const handleDelete = (parcours: Parcours) => {
-    if (confirm(`Supprimer le parcours "${parcours.nomParcours}" ?`)) {
-      deleteParcoursMutation.mutate(parcours.id)
+  const handleDelete = (ue: Ue) => {
+    if (confirm(`Supprimer le parcours "${ue.intitule}" ?`)) {
+      deleteParcoursMutation.mutate(ue.id)
     }
   }
 
@@ -41,19 +41,19 @@ export const ParcoursPage: React.FC = () => {
           onClick={handleOpenCreate}
           className="bg-gray-800 p-2 rounded-lg text-white"
         >
-          Ajouter un parcours
+          Ajouter une UE
         </button>
       </div>
 
       <Table
         data={parcours}
         columns={[
-          { key: "nomParcours", label: "Nom" },
-          { key: "anneeFormation", label: "Année" },
+          { key: "Numero", label: "num" },
+          { key: "", label: "Année" },
           {
             key: "actions",
             label: "Actions",
-            render: (row: Parcours) => (
+            render: (row: Ue) => (
               <>
                 <div className="space-x-4">
                   <button onClick={() => handleOpenEdit(row)}>
@@ -69,9 +69,9 @@ export const ParcoursPage: React.FC = () => {
         ]}
       />
 
-      <ParcoursFormModal
+      <UeFormModal
         isOpen={modalOpen}
-        editingParcours={editingParcours}
+        editingUE={editingParcours}
         onClose={handleCloseModal}
       />
     </div>

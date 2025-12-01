@@ -9,6 +9,7 @@ export function Sidebar() {
   const menuItems = [
     { path: "/", label: "Accueil", icon: "🏠" },
     { path: "/parcours", label: "Parcours", icon: "📚" },
+    { path: "/ue", label: "Ue", icon: "📕" }
   ]
 
   const isActive = (path: string) => {
@@ -50,11 +51,10 @@ export function Sidebar() {
           <Link
             key={item.path}
             to={item.path}
-            className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors ${
-              isActive(item.path)
+            className={`flex items-center gap-4 px-4 py-3 rounded-lg transition-colors ${isActive(item.path)
                 ? "bg-blue-100 text-blue-700 font-medium"
                 : "text-gray-700 hover:bg-gray-100"
-            }`}
+              }`}
             title={item.label}
           >
             <span className="text-xl">{item.icon}</span>
