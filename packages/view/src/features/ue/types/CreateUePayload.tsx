@@ -1,4 +1,4 @@
 export interface CreateUePayload {
   intitule: string;
-  numeroUe: number
+  numeroUe: string
 }

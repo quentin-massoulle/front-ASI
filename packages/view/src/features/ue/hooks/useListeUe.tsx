@@ -4,9 +4,9 @@ import type { Ue } from "../types"
 
 export const useListeUe = () => {
   return useQuery({
-    queryKey: ["parcours"],
+    queryKey: ["ues"],
     queryFn: async (): Promise<Ue[]> => {
-      const response = await apiFetch("/ue", {
+      const response = await apiFetch("/ues", {
         method: "GET",
       })
 

@@ -12,21 +12,21 @@ export const useCreateUe = () => {
 
   return useMutation({
     mutationFn: async (payload: CreateUePayload): Promise<Ue> => {
-      const response = await apiFetch("/Ue", {
+      const response = await apiFetch("/ues", {
         method: "POST",
         body: JSON.stringify(payload),
       })
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.error || "Failed to create parcours")
+        throw new Error(error.error || "Failed to create ue")
       }
 
       const data = (await response.json()) as CreateUeResponse
       return data.parcours
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["parcours"] })
+      queryClient.invalidateQueries({ queryKey: ["ues"] })
     },
   })
 }

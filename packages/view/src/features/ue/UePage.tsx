@@ -8,30 +8,30 @@ import type { Ue } from "./types"
 
 export const UePage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false)
-  const [editingParcours, setEditingParcours] = useState<Ue | null>(null)
+  const [editingUe, setEditingUe] = useState<Ue | null>(null)
 
-  const { data: parcours } = useListeUe()
-  const deleteParcoursMutation = useDeleteUe()
+  const { data: ue  } = useListeUe()
+  const deleteUeMutation = useDeleteUe()
 
   const handleOpenCreate = () => {
-    setEditingParcours(null)
+    setEditingUe(null)
     setModalOpen(true)
   }
 
   const handleOpenEdit = (ue: Ue) => {
-    setEditingParcours(ue)
+    setEditingUe(ue)
     setModalOpen(true)
   }
 
   const handleDelete = (ue: Ue) => {
-    if (confirm(`Supprimer le parcours "${ue.intitule}" ?`)) {
-      deleteParcoursMutation.mutate(ue.id)
+    if (confirm(`Supprimer l'ue "${ue.intitule}" ?`)) {
+      deleteUeMutation.mutate(ue.id)
     }
   }
 
   const handleCloseModal = () => {
     setModalOpen(false)
-    setEditingParcours(null)
+    setEditingUe(null)
   }
 
   return (
@@ -46,10 +46,10 @@ export const UePage: React.FC = () => {
       </div>
 
       <Table
-        data={parcours}
+        data={ue}
         columns={[
-          { key: "Numero", label: "num" },
-          { key: "", label: "Année" },
+          { key: "intitule", label: "intituler" },
+          { key: "numeroUe", label: "Numero" },
           {
             key: "actions",
             label: "Actions",
@@ -71,7 +71,7 @@ export const UePage: React.FC = () => {
 
       <UeFormModal
         isOpen={modalOpen}
-        editingUE={editingParcours}
+        editingUE={editingUe}
         onClose={handleCloseModal}
       />
     </div>

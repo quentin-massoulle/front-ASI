@@ -1,3 +1,4 @@
 export interface UpdateUePayload {
-  nomUe?: string;
+  numeroUe : string;
+  intitule: string;
 }

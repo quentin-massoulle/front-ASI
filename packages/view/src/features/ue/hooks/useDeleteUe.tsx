@@ -7,20 +7,20 @@ export const useDeleteUe = () => {
 
   return useMutation({
     mutationFn: async (id: number): Promise<void> => {
-      const response = await apiFetch(`/ue/${id}`, {
+      const response = await apiFetch(`/ues/${id}`, {
         method: "DELETE",
       })
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.error || "Failed to delete parcours")
+        throw new Error(error.error || "Failed to delete ue")
       }
     },
     onSuccess: (_, id) => {
       const previousParcours = queryClient.getQueryData<Ue[]>([
-        "parcours",
+        "ues",
       ])
-      queryClient.setQueryData<Ue[]>(["parcours"], (old) => {
+      queryClient.setQueryData<Ue[]>(["ues"], (old) => {
         return old?.filter((parcours) => parcours.id !== id)
       })
       return { previousParcours }

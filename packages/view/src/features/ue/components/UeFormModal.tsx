@@ -8,7 +8,7 @@ import type { Ue } from "../types"
 type FormState = {
   id?: number
   intitule: string
-  numeroUe: number
+  numeroUe: string
 }
 
 interface UeFormModalProps {
@@ -24,7 +24,7 @@ export const UeFormModal: React.FC<UeFormModalProps> = ({
 }) => {
   const [formState, setFormState] = useState<FormState>({
     intitule: "",
-    numeroUe: 0,
+    numeroUe: "",
   })
 
   const createUeseMutation = useCreateUe()
@@ -45,7 +45,7 @@ export const UeFormModal: React.FC<UeFormModalProps> = ({
       } else {
         setFormState({
           intitule: "",
-          numeroUe: 0,
+          numeroUe: "",
         })
       }
     }
@@ -112,7 +112,7 @@ export const UeFormModal: React.FC<UeFormModalProps> = ({
           label="Numero de L'ue"
           value={formState.numeroUe}
           onChange={(e) =>
-            setFormState((prev) => ({ ...prev, numeroUe: parseInt(e.target.value) || 0 }))
+            setFormState((prev) => ({ ...prev, numeroUe: e.target.value }))
           }
           placeholder="1-2,1-7"
         />
