@@ -9,7 +9,8 @@ export function Sidebar() {
   const menuItems = [
     { path: "/", label: "Accueil", icon: "🏠" },
     { path: "/parcours", label: "Parcours", icon: "📚" },
-    { path: "/ue", label: "Ue", icon: "📕" }
+    { path: "/ue", label: "Ue", icon: "📕" },
+    { path: "/etudiant", label: "etudiant", icon: "" }
   ]
 
   const isActive = (path: string) => {

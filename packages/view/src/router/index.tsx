@@ -3,6 +3,7 @@ import { App } from "@/App";
 import { HomePage } from "@/features/home/HomePage";
 import { ParcoursPage } from "@/features/parcours/ParcoursPage";
 import { UePage } from "@/features/ue/UePage";
+import { EtudiantPage } from "@/features/etudiant/EtudiantPage";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
       {
         path: "UE",
         element: <UePage />,
+      },
+      {
+        path: "Etudiant",
+        element: <EtudiantPage />,
       },
     ],
   },
