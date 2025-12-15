@@ -1,39 +1,36 @@
-import React from "react"
+import {
+  type FieldValues,
+  useController,
+  type UseControllerProps,
+} from "react-hook-form"
 
 type Option = {
   value: string
   label: string
 }
 
-type InputSelectProps = {
-  id: string
+type InputSelectProps<T extends FieldValues> = UseControllerProps<T> & {
   label: string
   options: Option[]
-  onChange: (e: string) => void
-} & Omit<React.HTMLProps<HTMLSelectElement>, "onChange">
+}
 
-export const InputSelect: React.FC<InputSelectProps> = ({
-  id,
+export const InputSelect = <T extends FieldValues>({
   label,
   options,
-  value,
-  onChange,
-}) => {
+  ...props
+}: InputSelectProps<T>) => {
+  const { field, fieldState } = useController(props)
   return (
-    <div className="mb-4">
+    <div>
       <label
-        htmlFor={id}
+        htmlFor={field.name}
         className="block text-sm font-medium text-gray-700 mb-2"
       >
         {label}
       </label>
       <div className="relative">
         <select
-          id={id}
-          value={value}
-          onChange={(e) => {
-            onChange(e.target.value)
-          }}
+          {...field}
           className="w-full appearance-none p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {options.map((option) => (
@@ -59,6 +56,9 @@ export const InputSelect: React.FC<InputSelectProps> = ({
           </svg>
         </div>
       </div>
+      {fieldState.error && (
+        <div className="text-red-500">{fieldState.error.message}</div>
+      )}
     </div>
   )
 }
