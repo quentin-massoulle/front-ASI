@@ -25,8 +25,13 @@ interface UeFormModalProps {
 
 // 2. Définir le Schéma Zod pour la validation
 const schema = z.object({
-  intitule: z.string().min(1, { message: "L'intitulé de l'UE est requis" }),
-  numeroUe: z.string().min(1, { message: "Le numéro de l'UE est requis" }),
+  intitule: z.string()
+  .min(1, { message: "L'intitulé de l'UE est requis" })
+  .max(25,{ message: "L'intitulé de l'UE trop long" }),
+
+  numeroUe: z.string()
+  .min(1, { message: "Le numéro de l'UE est requis" })
+  .max(3, {message: "Le numero de l'UE trop long" }),
   // Vous pourriez ajouter une validation plus spécifique pour le format '1-2, 1-7' ici si nécessaire
 })
 

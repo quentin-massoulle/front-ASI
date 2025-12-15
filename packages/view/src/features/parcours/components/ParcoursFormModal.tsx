@@ -22,7 +22,10 @@ interface ParcoursFormModalProps {
 }
 
 const schema = z.object({
-  nomParcours: z.string().min(1, { message: "Le nom du parcours est requis" }),
+  nomParcours: z.string()
+    .min(1, { message: "Le nom du parcours est requis" })
+    .max(30, {message: 'le nom du parcour est trop long'})
+  ,
   anneeFormation: z
     .string()
     .min(1, {
