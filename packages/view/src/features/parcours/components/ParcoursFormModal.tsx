@@ -60,10 +60,10 @@ export const ParcoursFormModal: React.FC<ParcoursFormModalProps> = ({
     createParcourseMutation.isPending || updateParcourseMutation.isPending
 
   const submitForm = async (formState: FormState) => {
-    if (formState.id) {
+    if (editingParcours?.id) {
       await updateParcourseMutation.mutateAsync(
         {
-          id: formState.id,
+          id: editingParcours?.id,
           payload: {
             nomParcours: formState.nomParcours,
             anneeFormation: parseInt(formState.anneeFormation, 10),
@@ -123,10 +123,10 @@ export const ParcoursFormModal: React.FC<ParcoursFormModalProps> = ({
           name="anneeFormation"
         />
         <div className="flex justify-end space-x-2 mt-2">
-          <Button onClick={onClose} disabled={isLoading}>
+          <Button onClick={onClose} disabled={isLoading} variant="ghost">
             Annuler
           </Button>
-          <Button type="submit" disabled={isLoading}>
+          <Button type="submit" disabled={isLoading} variant="secondary" >
             {isLoading
               ? isEditing
                 ? "Modification..."

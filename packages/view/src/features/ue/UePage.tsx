@@ -73,6 +73,8 @@ export const UePage: React.FC = () => {
         isOpen={modalOpen}
         editingUE={editingUe}
         onClose={handleCloseModal}
+        // Pourquoi mettre une key ici est utile ?
+        key={editingUe?.id ?? "create"}
       />
     </div>
   )

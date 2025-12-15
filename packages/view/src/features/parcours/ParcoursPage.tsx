@@ -70,6 +70,8 @@ export const ParcoursPage: React.FC = () => {
       />
 
       <ParcoursFormModal
+        // Pourquoi mettre une key ici est utile ?
+        key={editingParcours?.id ?? "create"}
         isOpen={modalOpen}
         editingParcours={editingParcours}
         onClose={handleCloseModal}
